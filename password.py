@@ -13,7 +13,7 @@ transform_values = {
         9 : 2
     }
 
-def encoder(password : str, inc : int) -> Tuple[str, bool]:
+def encode(password : str, inc : int = 3) -> Tuple[str, bool]:
     """
     Function accepts an 8 digit string of numbers, it will return a tuple 
     containing the encoded string and a boolean representing the success state.
@@ -31,7 +31,7 @@ def encoder(password : str, inc : int) -> Tuple[str, bool]:
     try:
         i_password = int(password)
     except ValueError:
-        print("Cannot Convert Password to Int")
+        print("Value Error: Cannot Convert Password to Int")
         return "", False
 
     digits = []
@@ -47,6 +47,29 @@ def encoder(password : str, inc : int) -> Tuple[str, bool]:
 
 
     return reduce(lambda x, y : x + y, digits), True
+
+def decode(password : str, inc : int = 3) -> Tuple[str, bool]:
+
+    if(len(password) != 8):
+        return "", False
+
+    try:
+        i_password = int(password)
+    except ValueError:
+        print("Value Error: Cannot Convert Password to Int")
+        return "", False
+
+    digits = []
+
+    for i in range(len(password)):
+        digit = (i_password // 10**i % 10)
+        digits.append(str(abs(digit - inc)))
+
+    digits.reverse()
+
+    return reduce(lambda x, y : x + y, digits), True
+
+
 
 
 
