@@ -1,15 +1,54 @@
-from ctypes import sizeof
-from typing import List
+from functools import reduce
+from typing import Tuple
 
-print(12345 // 10**1)
-print(12345 // 10**2)
-print(12345 // 10**3)
-print(12345 // 10**4)
+transform_values = {
+        1 : 4,
+        2 : 5,
+        3 : 6,
+        4 : 7,
+        5 : 8,
+        6 : 9,
+        7 : 0,
+        8 : 1,
+        9 : 2
+    }
 
-def get_digits(num : int):
-    size = len(str(num))
+def encoder(password : str, inc : int) -> Tuple[str, bool]:
+    """
+    Function accepts an 8 digit string of numbers, it will return a tuple 
+    containing the encoded string and a boolean representing the success state.
+
+    The encoding process will consist of iterating over each digit in the 
+    password an performing an opration to it.
+
+    - Overflows will be mod by 10 to return a single digit:
+        . If digit 11 then 11 % 10 = 1.
+    """
+
+    if(len(password) != 8):
+        return "", False
+     
+    try:
+        i_password = int(password)
+    except ValueError:
+        print("Cannot Convert Password to Int")
+        return "", False
+
     digits = []
-    for i in range(1, size):
-        print(num // 10**i)
 
-get_digits(12345)
+    #Loop gets all the digits and increments them by inc.
+    for i in range(len(password)):
+        #Getting single digit.
+        digit = (i_password // 10**i % 10)
+        #Appending digit plus inc mod 10 to avoid overflow.
+        digits.append(str((digit + inc) % 10))
+
+    digits.reverse()
+
+
+    return reduce(lambda x, y : x + y, digits), True
+
+
+
+
+
