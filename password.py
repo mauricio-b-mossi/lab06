@@ -1,17 +1,6 @@
 from functools import reduce
 from typing import Tuple
 
-transform_values = {
-        1 : 4,
-        2 : 5,
-        3 : 6,
-        4 : 7,
-        5 : 8,
-        6 : 9,
-        7 : 0,
-        8 : 1,
-        9 : 2
-    }
 
 def encode(password : str, inc : int = 3) -> Tuple[str, bool]:
     """
@@ -63,7 +52,7 @@ def decode(password : str, inc : int = 3) -> Tuple[str, bool]:
 
     for i in range(len(password)):
         digit = (i_password // 10**i % 10)
-        digits.append(str(abs(digit - inc)))
+        digits.append(str((10 + digit - inc) % 10))
 
     digits.reverse()
 
